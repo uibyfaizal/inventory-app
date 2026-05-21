@@ -23,10 +23,10 @@
 
     <!-- Desktop Menu (PRODUCT DIHAPUS) -->
     <el-popover-group class="hidden lg:flex lg:gap-x-12">
-      <a href="/" class="text-sm/6 text-gray-900 hover:text-blue-400">Dashboard</a>
+      <a href="/" class="text-sm/6 text-gray-900 hover:text-blue-400">Beranda</a>
       <a href="/items" class="text-sm/6 text-gray-900 hover:text-blue-400">Gudang</a>
       <a href="/transactions" class="text-sm/6 text-gray-900 hover:text-blue-400 disabled">Transaksi</a>
-      <a href="#" class="text-sm/6 text-gray-900 hover:text-blue-400">Laporan</a>
+      <a href="/dashboard" class="text-sm/6 text-gray-900 hover:text-blue-400">Dashboard</a>
     </el-popover-group>
 
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -60,9 +60,10 @@
               
               <!-- PRODUCT MOBILE DIHAPUS -->
               <div class="space-y-2 py-6">
-                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 text-gray-900 hover:bg-gray-50">Features</a>
-                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 text-gray-900 hover:bg-gray-50">Marketplace</a>
-                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 text-gray-900 hover:bg-gray-50">Company</a>
+                <a href="/" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 text-gray-900 hover:bg-gray-50">Beranda</a>
+                <a href="/items" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 text-gray-900 hover:bg-gray-50">Gudang</a>
+                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 text-gray-900 hover:bg-gray-50">Transaksi</a>
+                <a href="/dashboard" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 text-gray-900 hover:bg-gray-50">Dashboard</a>
               </div>
 
               <div class="py-6">

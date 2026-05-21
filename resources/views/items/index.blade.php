@@ -66,7 +66,27 @@
                                 <td class="px-6 py-4">
                                     {{ $item->category->name ?? '-' }}
                                 </td>
-                                <td class="px-3 md:px-6 py-3 md:py-4">{{ $item->stock }}</td>
+                                <td class="px-3 md:px-6 py-3 md:py-4">
+                                    {{-- Stock Barang Kosong --}}
+                                    @if ($item->stock == 0)
+                                        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                        ❌ Barang Kosong
+                                        </span>
+
+                                    {{-- Hampir Habis --}}
+                                    @elseif($item->stock <= 5)
+                                        <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
+                                            ⚠ {{ $item->stock }} Hampir Habis
+                                        </span>
+
+                                    {{-- Aman --}}
+                                    @else
+                                        <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-medium">
+                                            ✅ {{ $item->stock }} Stock Aman
+                                        </span>
+
+                                    @endif
+                                </td>
                                 <td class="px-3 md:px-6 py-3 md:py-4">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                                 <td class="px-3 md:px-6 py-3 md:py-4">
                                     

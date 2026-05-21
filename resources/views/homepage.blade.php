@@ -31,10 +31,6 @@
                             <x-button>Mulai Sekarang</x-button>
                         </a>
 
-                        <a href="#" class="px-4 py-2 border rounded hover:bg-gray-100">
-                            Lihat Demo
-                        </a>
-
                     </div>
 
                 </div>

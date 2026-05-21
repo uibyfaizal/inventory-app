@@ -26,6 +26,16 @@
                         placeholder="Masukkan nama barang" autocomplete="off">
                 </div>
 
+                {{-- Kategori --}}
+                <select name="category_id" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option value="" disabled selected>-- Pilih Kategori</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+
                 <!-- Stock -->
                 <div>
                     <label class="block text-sm font-medium text-gray-600 mb-1">
