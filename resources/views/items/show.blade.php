@@ -50,7 +50,7 @@
 
             <div class="space-y-2 text-gray-700 text-sm md:text-base">
                 <p><span class="font-medium">Nama Barang:</span> {{ $item->name }}</p>
-                <p><span class="font-medium">Stock:</span> {{ $item->stock }}</p>
+                <p><span class="font-medium whitespace-nowrap inline-block">Stock:</span> {{ $item->stock }}</p>
                 <p><span class="font-medium">Harga:</span> Rp {{ number_format($item->price, 0, ',', '.') }}</p>
             </div>
             

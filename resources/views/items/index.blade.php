@@ -17,9 +17,6 @@
         <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
             <div>
                 <h1 class="text-xl md:text-2xl font-bold pb-2 md:pb-4">📦 Gudang Keseluruhan Barang</h1>
-                <a href="/">
-                    <x-button>Back to Landing Page</x-button>
-                </a>
             </div>
 
             <a href="/items/create" class="w-full md:w-auto">
@@ -27,18 +24,70 @@
             </a>
         </div>
 
-        {{-- Filter Category --}}
-        <div class="flex flex-wrap gap-2 mb-5">
-            {{-- Semua --}}
-            <a href="/items" class="px-4 py-2 rounded-full text-sm transition {{ request('category') == null ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 text-center' }}">
-                Semua
-            </a>
+        {{-- Search  --}}
+        <div class="mb-4">
 
-            @foreach ($categories as $category)
-                <a href="/items?category={{ $category->id }}" class="px-4 py-2 rounded-full text-sm transition {{ request('category') == $category->id ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
-                    {{ $category->name }}
+    <form action="/items" method="GET" class="flex flex-col md:flex-row gap-2 w-full">
+
+        <input type="hidden" name="category" value="{{ request('category') }}">
+        <input type="hidden" name="sort" value="{{ request('sort') }}">
+
+        <!-- Input Search -->
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Cari Barang..."
+            class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            autocomplete="off"
+        >
+
+        <!-- Button -->
+        <button
+            type="submit"
+            class="w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg transition"
+        >
+            Cari
+        </button>
+
+    </form>
+
+</div>
+
+        <div>
+            {{-- Filter Category --}}
+            <div class="flex flex-wrap gap-2 mb-5">
+                {{-- Semua --}}
+                <a href="/items" class="px-4 py-2 rounded-full text-sm transition {{ request('category') == null ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 text-center' }}">
+                    Semua
                 </a>
-            @endforeach
+
+                @foreach ($categories as $category)
+                    <a href="/items?category={{ $category->id }}" class="px-4 py-2 rounded-full text-sm transition {{ request('category') == $category->id ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
+                        {{ $category->name }}
+                    </a>
+                @endforeach
+            </div>
+
+            <div class="filter-data mb-4" style="display: flex; gap: 20px;">
+                <form action="/items" method="GET">
+                    <select name="sort" onchange="this.form.submit()" class="rounded-lg border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" placeholder="Urut Berdasarkan">
+                        <option value="" disabled>Urut Berdasarkan</option>
+                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>
+                            Tanggal Terbaru
+                        </option>
+                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>
+                            Tanggal Terlama
+                        </option>
+                    </select>
+                </form>
+
+                <a href="/items/export/pdf">
+                <x-button class="bg-red-500 hover:bg-red-600">
+                    Export PDF
+                </x-button>
+            </a>
+            </div>
         </div>
 
         <!-- Table Card -->
@@ -52,7 +101,7 @@
                         <tr>
                             <th class="px-3 md:px-6 py-3 font-medium">Nama</th>
                             <th class="px-6 py-3 font-medium">Kategori</th>
-                            <th class="px-3 md:px-6 py-3 font-medium">Stock</th>
+                            <th class="px-5 md:px-6 py-3 font-medium">Stock</th>
                             <th class="px-3 md:px-6 py-3 font-medium">Harga</th>
                             <th class="px-3 md:px-6 py-3 font-medium">Aksi</th>
                         </tr>
@@ -62,32 +111,35 @@
                     <tbody class="text-gray-700 divide-y text-sm md:text-base">
                         @foreach ($items as $item)
                             <tr class="hover:bg-gray-50 transition">
-                                <td class="px-3 md:px-6 py-3 md:py-4">{{ $item->name }}</td>
+                                <td class="px-3 md:px-6 py-3 md:py-4">
+                                    <span style="font-size: 10px" class="text-red-500">{{ $item->created_at }}<br></span>
+                                    {{ $item->name }}
+                                </td>
                                 <td class="px-6 py-4">
                                     {{ $item->category->name ?? '-' }}
                                 </td>
                                 <td class="px-3 md:px-6 py-3 md:py-4">
                                     {{-- Stock Barang Kosong --}}
                                     @if ($item->stock == 0)
-                                        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
+                                        <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap inline-block">
                                         ❌ Barang Kosong
                                         </span>
 
                                     {{-- Hampir Habis --}}
                                     @elseif($item->stock <= 5)
-                                        <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium">
+                                        <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap inline-block">
                                             ⚠ {{ $item->stock }} Hampir Habis
                                         </span>
 
                                     {{-- Aman --}}
                                     @else
-                                        <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-medium">
+                                        <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap inline-block">
                                             ✅ {{ $item->stock }} Stock Aman
                                         </span>
 
                                     @endif
                                 </td>
-                                <td class="px-3 md:px-6 py-3 md:py-4">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
+                                <td class="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap inline-block">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                                 <td class="px-3 md:px-6 py-3 md:py-4">
                                     
                                     <div class="flex flex-col sm:flex-row gap-2">
@@ -119,6 +171,15 @@
 
                 </x-table>
             </div>
+
+            <!-- Pagination -->
+                <div class="mt-6 mb-4 flex justify-center">
+
+                    <div class="bg-white border border-gray-100 shadow-sm rounded-xl px-4 py-3 overflow-x-auto">
+                        {{ $items->links() }}
+                    </div>
+
+                </div>
 
         </div>
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\TransactionController;
 use App\Models\Category;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Item;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('homepage');
 });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +53,20 @@ Route::get('/dashboard', function () {
 
 /*
 |--------------------------------------------------------------------------
+| EXPORT REPORT PDF
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/items/export/pdf', function () {
+    $items = Item::with('category')->get();
+
+    $pdf = Pdf::loadView('items.pdf', compact('items'));
+
+    return $pdf->download('laporan-inventory.pdf');
+});
+
+/*
+|--------------------------------------------------------------------------
 | ITEMS PAGE
 |--------------------------------------------------------------------------
 */
@@ -72,7 +88,14 @@ Route::get('/items', function () {
         $items->where('name', 'like', '%' . request('search') . '%');
     }
 
-    $items = $items->get();
+    // Sorting
+    if (request('sort') == 'latest') {
+        $items->latest();
+    } elseif (request('sort') == 'oldest') {
+        $items->oldest();
+    }
+
+    $items = $items->paginate(5)->withQueryString();
 
     return view('items.index', compact('items', 'categories'));
 
@@ -157,7 +180,6 @@ Route::put('/items/{id}', function (Request $request, $id) {
     return redirect('/items')->with('success', 'Data berhasil diubah');
 
 });
-
 
 /*
 |--------------------------------------------------------------------------
