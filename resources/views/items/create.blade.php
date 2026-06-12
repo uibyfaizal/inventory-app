@@ -29,7 +29,7 @@
                 <div>
                     <label class="block text-sm font-medium text-grey-600 mb-1">Kategory</label>
 
-                    <select name="category_id" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <select id="categorySelect" name="category_id" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300">
                         <option value="" disabled selected>-- Pilih Kategori</option>
 
                         @foreach ($categories as $category)
@@ -38,6 +38,16 @@
                             </option>
                         @endforeach
                     </select>
+
+                    <div id="newCategoryBox" class="hidden mt-3">
+                        <label class="block text-sm font-medium text-gray-600 mb-1">
+                            Kategori Baru
+                        </label>    
+
+                        <input type="text" name="new_category"
+                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
+                        placeholder="Contoh: Alat Tulis" autocomplete="off">
+                    </div>
                     
                 </div>
 
@@ -79,6 +89,33 @@
                 </div>
 
             </form>
+
+            <script>
+
+                    const categorySelect =
+                    document.getElementById('categorySelect');
+
+                    const newCategoryBox =
+                    document.getElementById('newCategoryBox');
+
+                    categorySelect.addEventListener('change', function() {
+
+                        const selectedText =
+                        this.options[this.selectedIndex].text;
+
+                        if(selectedText === 'Lainnya') {
+
+                            newCategoryBox.classList.remove('hidden');
+
+                        } else {
+
+                            newCategoryBox.classList.add('hidden');
+
+                        }
+
+                    });
+
+            </script>
         </div>
 
     </div>

@@ -60,7 +60,15 @@ Route::get('/dashboard', function () {
 Route::get('/items/export/pdf', function () {
     $items = Item::with('category')->get();
 
-    $pdf = Pdf::loadView('items.pdf', compact('items'));
+
+    $transactions = \App\Models\Transaction::with('item')
+        ->latest()
+        ->get();
+
+    $pdf = Pdf::loadView('items.pdf', [
+        'items' => $items,
+        'transactions' => $transactions
+    ]);
 
     return $pdf->download('laporan-inventory.pdf');
 });
@@ -120,9 +128,20 @@ Route::get('/items/create', function () {
 // Simpan Data Barang
 Route::post('/items', function (Request $request) {
 
+    $categoryId = $request->category_id;
+
+    // jika user mengisi kategori baru
+    if ($request->new_category) {
+        $category = Category::create([
+            'name' => $request->new_category
+        ]);
+
+        $categoryId = $category->id;
+    }
+
     Item::create([
         'name' => $request->name,
-        'category_id' => $request->category_id,
+        'category_id' => $categoryId,
         'stock' => $request->stock,
         'price' => $request->price
     ]);
@@ -168,11 +187,22 @@ Route::get('/items/{id}/update', function ($id) {
 // Proses Update
 Route::put('/items/{id}', function (Request $request, $id) {
 
+    $categoryId = $request->category_id;
+
+    // jika user mengisi kategori baru
+    if ($request->new_category) {
+        $category = Category::create([
+            'name' => $request->new_category
+        ]);
+
+        $categoryId = $category->id;
+    }
+
     $item = Item::findOrFail($id);
 
     $item->update([
         'name' => $request->name,
-        'category_id' => $request->category_id,
+        'category_id' => $categoryId,
         'stock' => $request->stock,
         'price' => $request->price
     ]);
@@ -205,3 +235,29 @@ Route::get('/items/{item}/transactions/create', [TransactionController::class, '
 // Simpan Transaksi
 Route::post('/items/{item}/transactions', [TransactionController::class, 'store'])
     ->name('transactions.store');
+
+// Daftar barang Transaksi
+Route::get('/transactions', function() {
+
+    $items = Item::all();
+
+    return view('transactions.index', compact('items'));
+})->name('transactions.index');
+
+Route::get('/transactions/{item}', function(Item $item) {
+    $transactions = Transaction::where('item_id', $item->id)
+    ->latest()
+    ->get();
+
+    return view(
+        'transactions.show',
+        compact('item', 'transactions')
+    );
+})->name('transactions.show');
+
+
+
+// Form Ambil barang
+Route::get('/items/{item}/take', function (Item $item) {
+    return view('items.take', compact('item'));
+})->name('items.take');
