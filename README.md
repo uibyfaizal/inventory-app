@@ -1,4 +1,4 @@
-# Stora | Inventory Management System by Nexathon 📦
+# Stora | Inventory Management System by Tekora 📦
 
 A simple inventory management application built with Laravel.
 
