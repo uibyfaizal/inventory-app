@@ -1,4 +1,4 @@
-# SiGudang | Inventory App 📦
+# Stora | Inventory Management System by Nexathon 📦
 
 A simple inventory management application built with Laravel.
 
