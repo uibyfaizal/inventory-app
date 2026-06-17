@@ -37,6 +37,8 @@
                                 {{ $category->name }}
                             </option>
                         @endforeach
+
+                        <option value="other">Lainnya</option>
                     </select>
 
                     <div id="newCategoryBox" class="hidden mt-3">
@@ -62,14 +64,14 @@
                 </div>
 
                 <!-- Harga -->
-                <div>
+                {{-- <div>
                     <label class="block text-sm font-medium text-gray-600 mb-1">
                         Harga
                     </label>
                     <input type="number" name="price"
                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
                         placeholder="Masukkan harga" autocomplete="off">
-                </div>
+                </div> --}}
 
                 <!-- Button -->
                 <div class="pt-4 flex justify-end gap-2">

@@ -50,6 +50,18 @@
     {{--  --}}
 </head>
 <body>
+    @if ($store)
+        <div style="text-align:center; margin-bottom:20px">
+            <h2 style="margin:0;">{{ $store->store_name }}</h2>
+
+            <p style="margin: 5px 0;">{{ $store->address }}</p>
+
+            <p style="margin: 5px 0;">{{ $store->phone }}</p>
+
+            <p style="margin: 5px 0;">{{ $store->email }}</p>
+        </div>
+        <hr>
+    @endif
     <h1>LAPORAN INVENTORY</h1>
 
     <p class="subtitle">
@@ -78,7 +90,7 @@
                 <th>Nama Barang</th>
                 <th>Kategori</th>
                 <th>Stock</th>
-                <th>Harga</th>
+                {{-- <th>Harga</th> --}}
                 <th>Tanggal Masuk</th>
             </tr>
         </thead>
@@ -92,9 +104,9 @@
                         {{ $item->category->name ?? '-' }}
                     </td>
                     <td>{{ $item->stock }}</td>
-                    <td>
+                    {{-- <td>
                         Rp {{ number_format($item->price,0,',','.') }}
-                    </td>
+                    </td> --}}
 
                     <td>
                         {{ $item->created_at->format('d-m-Y') }}

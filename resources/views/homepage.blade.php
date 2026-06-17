@@ -1,5 +1,4 @@
 <x-layout>
-
     <x-navbar></x-navbar>
 
     {{-- Hero Section --}}
@@ -27,10 +26,11 @@
                     <!-- BUTTON -->
                     <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-5">
 
-                        <a href="/items">
-                            <x-button>Mulai Sekarang</x-button>
+                        <a href="/store-settings">
+                            <x-button>
+                                Mulai Sekarang
+                            </x-button>
                         </a>
-
                     </div>
 
                 </div>
@@ -627,5 +627,4 @@
 
 </footer>
 {{-- End Footer Section --}}
-
 </x-layout>

@@ -9,7 +9,7 @@ class Item extends Model
     protected $fillable = [
         'name',
         'stock',
-        'price',
+        // 'price',
         'category_id'
     ];
 

@@ -12,10 +12,19 @@
                 </a>
             </div>
         @endif
+
+        {{-- Menampilkan nama  toko --}}
+        @if ($store)
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-5 rounded-2xl mb-5 shadow">
+                <p class="text-bluee-600 text-sm">Inventory Management System</p>
+                <h2 class="text-2xl font-bold mt-1">🏪 {{ $store->store_name }}</h2>
+            </div>
+        @endif
         
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
             <div>
+                {{-- <h1 class="text-xl md:text-3xl font-bold pb-2 md:pb-4">{{  }}</h1> --}}
                 <h1 class="text-xl md:text-2xl font-bold pb-2 md:pb-4">📦 Gudang Keseluruhan Barang</h1>
             </div>
 
@@ -102,7 +111,7 @@
                             <th class="px-3 md:px-6 py-3 font-medium">Nama</th>
                             <th class="px-6 py-3 font-medium">Kategori</th>
                             <th class="px-5 md:px-6 py-3 font-medium">Stock</th>
-                            <th class="px-3 md:px-6 py-3 font-medium">Harga</th>
+                            {{-- <th class="px-3 md:px-6 py-3 font-medium">Harga</th> --}}
                             <th class="px-3 md:px-6 py-3 font-medium">Aksi</th>
                         </tr>
                     </thead>
@@ -139,7 +148,7 @@
 
                                     @endif
                                 </td>
-                                <td class="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap inline-block">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
+                                {{-- <td class="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap inline-block">Rp {{ number_format($item->price, 0, ',', '.') }}</td> --}}
                                 <td class="px-3 md:px-6 py-3 md:py-4">
                                     
                                     <div class="flex flex-col sm:flex-row gap-2">

@@ -3,10 +3,12 @@
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\TransactionController;
 use App\Models\Category;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Item;
+use App\Models\StoreSetting;
 use App\Models\Transaction;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('homepage');
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -65,9 +66,12 @@ Route::get('/items/export/pdf', function () {
         ->latest()
         ->get();
 
+    $store = StoreSetting::first();
+
     $pdf = Pdf::loadView('items.pdf', [
         'items' => $items,
-        'transactions' => $transactions
+        'transactions' => $transactions,
+        'store' => $store
     ]);
 
     return $pdf->download('laporan-inventory.pdf');
@@ -83,6 +87,8 @@ Route::get('/items/export/pdf', function () {
 Route::get('/items', function () {
 
     $categories = Category::all();
+
+    $store = StoreSetting::first();
 
     $items = Item::with('category');
 
@@ -105,7 +111,7 @@ Route::get('/items', function () {
 
     $items = $items->paginate(5)->withQueryString();
 
-    return view('items.index', compact('items', 'categories'));
+    return view('items.index', compact('items', 'categories', 'store'));
 
 })->name('items.index');
 
@@ -118,6 +124,19 @@ Route::get('/items', function () {
 
 // Halaman Form Tambah Barang
 Route::get('/items/create', function () {
+
+    $defaultCategories = [
+        'Makanan',
+        'Bahan',
+        'Elektronik',
+        'Peralatan'
+    ];
+
+    foreach ($defaultCategories as $categoryName) {
+        Category::firstOrCreate([
+            'name' => $categoryName
+        ]);
+    }
 
     $categories = Category::all();
 
@@ -261,3 +280,33 @@ Route::get('/transactions/{item}', function(Item $item) {
 Route::get('/items/{item}/take', function (Item $item) {
     return view('items.take', compact('item'));
 })->name('items.take');
+
+
+// Route Halaman Toko
+Route::get('/store-settings', function() {
+    $store = StoreSetting::first();
+
+    return view('store-settings', compact('store'));
+})->name('store-settings');
+
+Route::post('/store-settings', function(Request $request) {
+    $store = StoreSetting::first();
+
+    if($store) {
+        $store->update([
+            'store_name' => $request->store_name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'address' => $request->address
+        ]);
+    } else {
+        StoreSetting::create([
+            'store_name' => $request->store_name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'address' => $request->address
+        ]);
+    }
+
+    return back()->with('success', 'Pengaturan toko behasil disimpan');
+});
