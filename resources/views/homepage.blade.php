@@ -522,9 +522,7 @@
                 </div>
 
                 <p class="text-gray-500 mt-4 max-w-md leading-relaxed text-sm">
-                    Aplikasi inventory modern untuk membantu bisnis
-                    mengelola stock barang, transaksi, dan monitoring
-                    inventory dengan lebih mudah dan efisien.
+                    Aplikasi Inventory Management System by <a href="" class="font-bold">Nexathon</a>
                 </p>
 
             </div>
@@ -539,25 +537,25 @@
                 <ul class="space-y-3 text-sm text-gray-500">
 
                     <li>
-                        <a href="#" class="hover:text-blue-500 transition">
-                            Home
+                        <a href="/" class="hover:text-blue-500 transition">
+                            Beranda
                         </a>
                     </li>
 
                     <li>
                         <a href="/items" class="hover:text-blue-500 transition">
-                            Inventory
+                            Gudang
                         </a>
                     </li>
 
                     <li>
-                        <a href="#" class="hover:text-blue-500 transition">
-                            Features
+                        <a href="/transactions" class="hover:text-blue-500 transition">
+                            Transaksi
                         </a>
                     </li>
 
                     <li>
-                        <a href="#" class="hover:text-blue-500 transition">
+                        <a href="/dashboard" class="hover:text-blue-500 transition">
                             Dashboard
                         </a>
                     </li>

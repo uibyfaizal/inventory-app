@@ -31,10 +31,10 @@
                     <label class="block text-sm font-medium text-grey-600 mb-1">Kategory</label>
 
                     <select id="categorySelect" name="category_id" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                        <option value="" disabled selected>-- Pilih Kategori</option>
+                        <option value="Lainnya" disabled selected>-- Pilih Kategori</option>
 
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">
+                            <option value="{{ $category->id }}" {{ $item->category_id == $category->id ? 'selected' : '' }}>
                                 {{ $category->name }}
                             </option>
                         @endforeach

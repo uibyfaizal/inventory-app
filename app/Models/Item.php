@@ -10,7 +10,8 @@ class Item extends Model
         'name',
         'stock',
         // 'price',
-        'category_id'
+        'category_id',
+        'user_id'
     ];
 
     public function transaction() 

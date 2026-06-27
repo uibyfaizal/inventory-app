@@ -14,7 +14,7 @@
         @endif
 
         {{-- Menampilkan nama  toko --}}
-        @if ($store)
+        @if (($store))
             <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-5 rounded-2xl mb-5 shadow">
                 <p class="text-bluee-600 text-sm">Inventory Management System</p>
                 <h2 class="text-2xl font-bold mt-1">🏪 {{ $store->store_name }}</h2>

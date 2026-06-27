@@ -6,8 +6,8 @@
     <div class="flex lg:flex-1">
       <a href="#" class="-m-1.5 p-1.5 text-lg font-semibold text-gray-900">
         <div class="flex justify-center">
-            <img src="/image/logo-sigudang.png" class="w-10" alt="logo">
-            SiGudang
+            <img src="/image/StoraLogo.png" class="w-20" alt="logo">
+            
         </div>
       </a>
     </div>
@@ -30,9 +30,47 @@
     </el-popover-group>
 
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-      <a href="#" class="text-sm/6 font-semibold text-gray-900 hover:text-blue-400">
-        <x-button>Login &rarr;</x-button>
-      </a>
+      @guest
+        <a href="{{ route('login') }}"
+          class="px-4 py-2 rounded-lg bg-[#14C4BE] text-white">
+            Login
+        </a>
+      @endguest
+
+      @auth
+        <div class="relative">
+            <button id="userMenuButton"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">
+                {{ Auth::user()->name }}
+                <span>▼</span>
+            </button>
+
+            <div id="userDropdown"
+                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border z-50">
+
+                <a href="#"
+                    class="block px-4 py-3 hover:bg-gray-50">
+                    👤 Profile
+                </a>
+
+                <a href="/store-settings"
+                    class="block px-4 py-3 hover:bg-gray-50">
+                    ⚙️ Pengaturan Toko
+                </a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <button
+                        type="submit"
+                        class="w-full text-left px-4 py-3 hover:bg-red-50 text-red-500">
+                        🚪 Logout
+                    </button>
+                </form>
+
+            </div>
+        </div>
+      @endauth
     </div>
   </nav>
 
@@ -81,3 +119,29 @@
   </el-dialog>
 </header>
 </div>
+
+<script>
+    const button = document.getElementById('userMenuButton');
+    const dropdown = document.getElementById('userDropdown');
+
+    if(button){
+        button.addEventListener('click', () => {
+            dropdown.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', function(e){
+            if(
+                !button.contains(e.target) &&
+                !dropdown.contains(e.target)
+            ){
+                dropdown.classList.add('hidden');
+            }
+        });
+    }
+</script>
+
+<script>
+function showLoginAlert() {
+    alert('Silakan login atau register terlebih dahulu untuk menggunakan fitur Stora.');
+}
+</script>
