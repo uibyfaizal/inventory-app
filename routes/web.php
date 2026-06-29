@@ -30,13 +30,19 @@ Route::middleware('auth')->group(function () {
     */
     Route::get('/dashboard', function () {    
 
-        $totalItems = Item::count();
+        $userId = auth()->id();
 
-        $totalCategories = Category::count();
+        $totalItems = Item::where('user_id', $userId)->count();
 
-        $totalTransactions = Transaction::count();
+        $totalCategories = Category::where('user_id', $userId)->count();
 
-        $lowStockItems = Item::where('stock', '<=',5)->count();
+        $totalTransactions = Transaction::whereHas('item', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->count();
+
+        $lowStockItems = Item::where('user_id', $userId)
+            ->where('stock', '<=', 5)
+            ->count();
 
         // Tujuan code ini untuk menghitung jumlah transaksi berdasarkan per tanggal
         $transactionsChart = \App\Models\Transaction::selectRaw('DATE(created_at) as date, COUNT(*) as total')
@@ -61,14 +67,19 @@ Route::middleware('auth')->group(function () {
     */
 
     Route::get('/items/export/pdf', function () {
-        $items = Item::with('category')->get();
+        $items = Item::with('category')
+            ->where('user_id', auth()->id())
+            ->get();
 
 
-        $transactions = \App\Models\Transaction::with('item')
+        $transactions = Transaction::with('item')
+            ->whereHas('item', function ($query) {
+                $query->where('user_id', auth()->id());
+            })
             ->latest()
             ->get();
 
-        $store = StoreSetting::first();
+        $store = StoreSetting::where('user_id', auth()->id())->first();
 
         $pdf = Pdf::loadView('items.pdf', [
             'items' => $items,
@@ -107,11 +118,12 @@ Route::middleware('auth')->group(function () {
 
         foreach ($defaultCategories as $categoryName) {
             Category::firstOrCreate([
-                'name' => $categoryName
+                'name' => $categoryName,
+                'user_id' => auth()->id()
             ]);
         }
 
-        $categories = Category::all();
+        $categories = Category::where('user_id', auth()->id())->get();
 
         return view('items.create', compact('categories'));
 
@@ -119,9 +131,6 @@ Route::middleware('auth')->group(function () {
 
     // Simpan Data Barang
     Route::post('/items', [ItemController::class, 'store']);
-
-    Route::get('/items', [ItemController::class, 'index'])->name('items.index');
-
 
     /*
     |--------------------------------------------------------------------------
@@ -164,7 +173,8 @@ Route::middleware('auth')->group(function () {
         // jika user mengisi kategori baru
         if ($request->new_category) {
             $category = Category::create([
-                'name' => $request->new_category
+                'name' => $request->new_category,
+                'user_id' => auth()->id()
             ]);
 
             $categoryId = $category->id;
@@ -211,21 +221,25 @@ Route::middleware('auth')->group(function () {
     // Daftar barang Transaksi
     Route::get('/transactions', function() {
 
-        $items = Item::all();
+        $items = Item::where('user_id', auth()->id())->get();
 
         return view('transactions.index', compact('items'));
     })->name('transactions.index');
 
     Route::get('/transactions/{item}', function(Item $item) {
-        $transactions = Transaction::where('item_id', $item->id)
+
+    abort_if($item->user_id !== auth()->id(), 403);
+
+    $transactions = Transaction::where('item_id', $item->id)
         ->latest()
         ->get();
 
-        return view(
-            'transactions.show',
-            compact('item', 'transactions')
-        );
-    })->name('transactions.show');
+    return view(
+        'transactions.show',
+        compact('item', 'transactions')
+    );
+
+})->name('transactions.show');
 
 
 
@@ -237,13 +251,13 @@ Route::middleware('auth')->group(function () {
 
     // Route Halaman Toko
     Route::get('/store-settings', function() {
-        $store = StoreSetting::first();
+        $store = StoreSetting::where('user_id', auth()->id())->first();
 
         return view('store-settings', compact('store'));
     })->name('store-settings');
 
     Route::post('/store-settings', function(Request $request) {
-        $store = StoreSetting::first();
+        $store = StoreSetting::where('user_id', auth()->id())->first();
 
         if($store) {
             $store->update([
@@ -257,7 +271,8 @@ Route::middleware('auth')->group(function () {
                 'store_name' => $request->store_name,
                 'phone' => $request->phone,
                 'email' => $request->email,
-                'address' => $request->address
+                'address' => $request->address,
+                'user_id' => auth()->id()
             ]);
         }
 

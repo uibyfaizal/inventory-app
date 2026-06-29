@@ -10,60 +10,61 @@ use Illuminate\Http\Request;
 class ItemController extends Controller
 {
     public function index()
-{
-    $userId = auth()->id();
+    {
+        $userId = auth()->id();
 
-    $items = Item::with('category')
-        ->where('user_id', $userId);
+        $items = Item::with('category')
+            ->where('user_id', $userId);
 
-    // Search
-    if (request('search')) {
-        $items->where(
-            'name',
-            'like',
-            '%' . request('search') . '%'
+        // Search
+        if (request('search')) {
+            $items->where(
+                'name',
+                'like',
+                '%' . request('search') . '%'
+            );
+        }
+
+        // Filter kategori
+        if (request('category')) {
+            $items->where(
+                'category_id',
+                request('category')
+            );
+        }
+
+        // Sorting
+        if (request('sort') == 'oldest') {
+            $items->oldest();
+        } else {
+            $items->latest();
+        }
+
+        $items = $items
+            ->paginate(10)
+            ->withQueryString();
+
+        $categories = Category::where('user_id', auth()->id())->get();
+
+        $store = StoreSetting::where('user_id', auth()->id())->first();
+
+        return view(
+            'items.index',
+            compact(
+                'items',
+                'categories',
+                'store'
+            )
         );
     }
-
-    // Filter kategori
-    if (request('category')) {
-        $items->where(
-            'category_id',
-            request('category')
-        );
-    }
-
-    // Sorting
-    if (request('sort') == 'oldest') {
-        $items->oldest();
-    } else {
-        $items->latest();
-    }
-
-    $items = $items
-        ->paginate(10)
-        ->withQueryString();
-
-    $categories = Category::all();
-
-    $store = StoreSetting::first();
-
-    return view(
-        'items.index',
-        compact(
-            'items',
-            'categories',
-            'store'
-        )
-    );
-}
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
-            'stock' => 'required',
+            'stock' => 'required|integer|min:0',
             'category_id' => 'required',
+            'new_category' => 'required_if:category_id,other'
         ]);
 
         $categoryId = $request->category_id;
@@ -72,9 +73,10 @@ class ItemController extends Controller
         if ($request->category_id == 'other') {
 
             $category = Category::create([
-                'name' => $request->new_category
+                'name' => $request->new_category,
+                'user_id' => auth()->id()
             ]);
-
+            
             $categoryId = $category->id;
         }
 

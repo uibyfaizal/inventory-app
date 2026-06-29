@@ -10,6 +10,12 @@ class StoreSetting extends Model
         'store_name',
         'phone',
         'email',
-        'address'
+        'address',
+        'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

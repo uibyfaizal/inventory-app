@@ -10,6 +10,7 @@ class TransactionController extends Controller
 {
     public function store(Request $request, Item $item)
     {
+        abort_if($item->user_id !== auth()->id(), 403);
         // Perintah dibawah artinya: Pastikan semua data dari user valid. Contoh: item_id harus ada di table items. type cuman boleh IN atau OUT, quantity minimal 1
         $request->validate([
             // 'item_id' => 'required|exists:items,id',
@@ -50,6 +51,8 @@ class TransactionController extends Controller
 
     public function create(Item $item)
     {
+        abort_if($item->user_id !== auth()->id(), 403);
+
         return view('transactions.create', compact('item'));
     }
 }

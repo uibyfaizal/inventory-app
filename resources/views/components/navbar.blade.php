@@ -6,7 +6,7 @@
     <div class="flex lg:flex-1">
       <a href="#" class="-m-1.5 p-1.5 text-lg font-semibold text-gray-900">
         <div class="flex justify-center">
-            <img src="/image/StoraLogo.png" class="w-20" alt="logo">
+            <img src="/image/stora_logo.png" class="w-20" alt="logo">
             
         </div>
       </a>
@@ -23,10 +23,10 @@
 
     <!-- Desktop Menu (PRODUCT DIHAPUS) -->
     <el-popover-group class="hidden lg:flex lg:gap-x-12">
-      <a href="/" class="text-sm/6 text-gray-900 hover:text-blue-400">Beranda</a>
-      <a href="/items" class="text-sm/6 text-gray-900 hover:text-blue-400">Gudang</a>
-      <a href="/transactions" class="text-sm/6 text-gray-900 hover:text-blue-400 disabled">Transaksi</a>
-      <a href="/dashboard" class="text-sm/6 text-gray-900 hover:text-blue-400">Dashboard</a>
+      <a href="/" class="text-sm/6 text-gray-900 hover:text-green-700">Beranda</a>
+      <a href="/items" class="text-sm/6 text-gray-900 hover:text-green-700">Gudang</a>
+      <a href="/transactions" class="text-sm/6 text-gray-900 hover:text-green-700 disabled">Transaksi</a>
+      <a href="/dashboard" class="text-sm/6 text-gray-900 hover:text-green-700">Dashboard</a>
     </el-popover-group>
 
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -38,38 +38,132 @@
       @endguest
 
       @auth
-        <div class="relative">
-            <button id="userMenuButton"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">
-                {{ Auth::user()->name }}
-                <span>▼</span>
-            </button>
+      <div class="relative">
 
-            <div id="userDropdown"
-                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border z-50">
+          <!-- User Button -->
+          <button
+              id="userMenuButton"
+              class="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-3 py-2 shadow-sm transition hover:border-green-200 hover:shadow-md">
 
-                <a href="#"
-                    class="block px-4 py-3 hover:bg-gray-50">
-                    👤 Profile
-                </a>
+              <!-- Avatar -->
+              <div
+                  class="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 font-semibold text-green-700">
 
-                <a href="/store-settings"
-                    class="block px-4 py-3 hover:bg-gray-50">
-                    ⚙️ Pengaturan Toko
-                </a>
+                  {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
 
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
+              </div>
 
-                    <button
-                        type="submit"
-                        class="w-full text-left px-4 py-3 hover:bg-red-50 text-red-500">
-                        🚪 Logout
-                    </button>
-                </form>
+              <!-- Name -->
+              <div class="hidden text-left md:block">
 
-            </div>
-        </div>
+                  <p class="text-sm font-semibold text-gray-900">
+                      {{ Auth::user()->name }}
+                  </p>
+
+                  <p class="text-xs text-gray-500">
+                      Administrator
+                  </p>
+
+              </div>
+
+              <!-- Arrow -->
+              <svg
+                  class="h-5 w-5 text-gray-400 transition"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24">
+
+                  <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19 9l-7 7-7-7" />
+
+              </svg>
+
+          </button>
+
+          <!-- Dropdown -->
+          <div
+              id="userDropdown"
+              class="hidden absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl z-50">
+
+              <!-- Header -->
+              <div class="border-b bg-gray-50 px-5 py-4">
+
+                  <p class="font-semibold text-gray-900">
+
+                      {{ Auth::user()->name }}
+
+                  </p>
+
+                  <p class="text-sm text-gray-500">
+
+                      Selamat datang kembali 👋
+
+                  </p>
+
+              </div>
+
+              <!-- Menu -->
+
+              <div class="py-2">
+
+                  <a
+                      href="/store-settings"
+                      class="flex items-center gap-3 px-5 py-3 text-gray-700 transition hover:bg-green-50 hover:text-green-700">
+
+                      <span class="text-lg">
+
+                          ⚙️
+
+                      </span>
+
+                      <span>
+
+                          Pengaturan Toko
+
+                      </span>
+
+                  </a>
+
+              </div>
+
+              <!-- Divider -->
+
+              <div class="border-t"></div>
+
+              <!-- Logout -->
+
+              <form
+                  method="POST"
+                  action="{{ route('logout') }}">
+
+                  @csrf
+
+                  <button
+                      type="submit"
+                      class="flex w-full items-center gap-3 px-5 py-3 text-left text-red-500 transition hover:bg-red-50">
+
+                      <span class="text-lg">
+
+                          🚪
+
+                      </span>
+
+                      <span>
+
+                          Logout
+
+                      </span>
+
+                  </button>
+
+              </form>
+
+          </div>
+
+      </div>
       @endauth
     </div>
   </nav>
