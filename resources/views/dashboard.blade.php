@@ -1,111 +1,264 @@
 <x-layout>
-    <x-navbar></x-navbar>
 
-    <div class="max-w-7xl mx-auto py-8 md:py-10 px-4">
+    <x-sidebar />
 
-        <!-- Header -->
-        <div class="mb-8">
+    <main class="ml-64 min-h-screen bg-[#f5f7fb]">
 
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">
-                📊 Dashboard Inventory
-            </h1>
+        <div class="max-w-7xl mx-auto py-8 px-8">
 
-            <p class="text-gray-500 mt-2">
-                Ringkasan data inventory gudang secara real-time
-            </p>
+            {{-- Hero --}}
+            <div class="bg-gradient-to-r from-green-600 to-emerald-500 rounded-3xl p-8 text-white shadow-lg mb-8">
 
-        </div>
+                <p class="text-green-100 text-sm">
+                    Inventory Management System
+                </p>
 
-        <!-- Statistik Card -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <h1 class="text-4xl font-bold mt-2">
+                    Dashboard Stora 👋
+                </h1>
 
-            <!-- Total Barang -->
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl p-6 shadow-lg">
+                <p class="mt-3 text-green-100 max-w-2xl">
+                    Pantau seluruh aktivitas gudang, stok barang, kategori, dan transaksi secara real-time dalam satu dashboard.
+                </p>
 
-                <div class="flex justify-between items-center">
+            </div>
 
-                    <div>
-                        <p class="text-blue-100 text-sm">
-                            Total Barang
-                        </p>
 
-                        <h2 class="text-4xl font-bold mt-2">
-                            {{ $totalItems }}
-                        </h2>
+            {{-- Statistik --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+                {{-- Barang --}}
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition p-6">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <p class="text-gray-500">
+                                Total Barang
+                            </p>
+
+                            <h2 class="text-4xl font-bold mt-3 text-gray-800">
+                                {{ $totalItems }}
+                            </h2>
+
+                        </div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center text-2xl">
+                            📦
+                        </div>
+
                     </div>
 
-                    <div class="text-5xl opacity-30">
+                </div>
+
+                {{-- Kategori --}}
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition p-6">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <p class="text-gray-500">
+                                Total Kategori
+                            </p>
+
+                            <h2 class="text-4xl font-bold mt-3 text-gray-800">
+                                {{ $totalCategories }}
+                            </h2>
+
+                        </div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center text-2xl">
+                            🗂️
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- Transaksi --}}
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition p-6">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <p class="text-gray-500">
+                                Total Transaksi
+                            </p>
+
+                            <h2 class="text-4xl font-bold mt-3 text-gray-800">
+                                {{ $totalTransactions }}
+                            </h2>
+
+                        </div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center text-2xl">
+                            🔄
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- Low Stock --}}
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition p-6">
+
+                    <div class="flex justify-between">
+
+                        <div>
+
+                            <p class="text-gray-500">
+                                Stock Menipis
+                            </p>
+
+                            <h2 class="text-4xl font-bold mt-3 text-red-500">
+                                {{ $lowStockItems }}
+                            </h2>
+
+                        </div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-red-100 flex items-center justify-center text-2xl">
+                            ⚠️
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- Quick Action --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+
+                <a href="/items/create"
+                    class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition p-6">
+
+                    <div class="text-4xl">
+                        ➕
+                    </div>
+
+                    <h3 class="font-bold text-lg mt-4">
+                        Tambah Barang
+                    </h3>
+
+                    <p class="text-gray-500 mt-2 text-sm">
+                        Tambahkan stok atau produk baru ke gudang.
+                    </p>
+
+                </a>
+
+                <a href="/items"
+                    class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition p-6">
+
+                    <div class="text-4xl">
                         📦
                     </div>
 
-                </div>
+                    <h3 class="font-bold text-lg mt-4">
+                        Kelola Gudang
+                    </h3>
 
-            </div>
+                    <p class="text-gray-500 mt-2 text-sm">
+                        Lihat seluruh data inventori.
+                    </p>
 
-            <!-- Total Kategori -->
-            <div class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-2xl p-6 shadow-lg">
+                </a>
 
-                <div class="flex justify-between items-center">
+                <a href="/transactions"
+                    class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition p-6">
 
-                    <div>
-                        <p class="text-green-100 text-sm">
-                            Total Kategori
-                        </p>
-
-                        <h2 class="text-4xl font-bold mt-2">
-                            {{ $totalCategories }}
-                        </h2>
-                    </div>
-
-                    <div class="text-5xl opacity-30">
-                        🗂️
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Total Transaksi -->
-            <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-2xl p-6 shadow-lg">
-
-                <div class="flex justify-between items-center">
-
-                    <div>
-                        <p class="text-purple-100 text-sm">
-                            Total Transaksi
-                        </p>
-
-                        <h2 class="text-4xl font-bold mt-2">
-                            {{ $totalTransactions }}
-                        </h2>
-                    </div>
-
-                    <div class="text-5xl opacity-30">
+                    <div class="text-4xl">
                         📈
                     </div>
 
+                    <h3 class="font-bold text-lg mt-4">
+                        Riwayat Transaksi
+                    </h3>
+
+                    <p class="text-gray-500 mt-2 text-sm">
+                        Pantau barang masuk dan keluar.
+                    </p>
+
+                </a>
+
+            </div>
+
+
+            {{-- Chart --}}
+            <div class="bg-white rounded-3xl shadow-sm mt-8 p-8">
+
+                <div class="mb-6">
+
+                    <h2 class="text-2xl font-bold text-gray-800">
+                        Statistik Inventory
+                    </h2>
+
+                    <p class="text-gray-500 mt-1">
+                        Distribusi data inventori saat ini.
+                    </p>
+
+                </div>
+
+                <div class="max-w-xl mx-auto">
+
+                    <canvas id="inventoryChart"></canvas>
+
                 </div>
 
             </div>
 
-            <!-- Low Stock -->
-            <div class="bg-gradient-to-r from-red-500 to-red-600 text-white rounded-2xl p-6 shadow-lg">
 
-                <div class="flex justify-between items-center">
+            {{-- Status --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
 
-                    <div>
-                        <p class="text-red-100 text-sm">
-                            Stock Hampir Habis
-                        </p>
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
 
-                        <h2 class="text-4xl font-bold mt-2">
-                            {{ $lowStockItems }}
-                        </h2>
-                    </div>
+                    <p class="text-gray-500">
+                        Status Gudang
+                    </p>
 
-                    <div class="text-5xl opacity-30">
-                        ⚠️
-                    </div>
+                    <h2 class="text-2xl font-bold text-green-600 mt-3">
+                        Normal
+                    </h2>
+
+                    <p class="text-sm text-gray-500 mt-2">
+                        Semua sistem berjalan baik.
+                    </p>
+
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+                    <p class="text-gray-500">
+                        Monitoring
+                    </p>
+
+                    <h2 class="text-2xl font-bold text-blue-600 mt-3">
+                        Real-time
+                    </h2>
+
+                    <p class="text-sm text-gray-500 mt-2">
+                        Data selalu diperbarui.
+                    </p>
+
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm">
+
+                    <p class="text-gray-500">
+                        Total Data Aktif
+                    </p>
+
+                    <h2 class="text-2xl font-bold text-emerald-600 mt-3">
+                        {{ $totalItems + $totalCategories }}
+                    </h2>
+
+                    <p class="text-sm text-gray-500 mt-2">
+                        Barang dan kategori tersimpan.
+                    </p>
 
                 </div>
 
@@ -113,142 +266,69 @@
 
         </div>
 
-        <!-- Quick Summary -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-
-                <p class="text-sm text-gray-400">
-                    Status Gudang
-                </p>
-
-                <h3 class="text-xl font-bold text-green-500 mt-2">
-                    Normal
-                </h3>
-
-                <p class="text-gray-500 text-sm mt-2">
-                    Inventory berjalan dengan baik.
-                </p>
-
-            </div>
-
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-
-                <p class="text-sm text-gray-400">
-                    Total Data Aktif
-                </p>
-
-                <h3 class="text-xl font-bold text-blue-500 mt-2">
-                    {{ $totalItems + $totalCategories }}
-                </h3>
-
-                <p class="text-gray-500 text-sm mt-2">
-                    Barang & kategori yang tersimpan.
-                </p>
-
-            </div>
-
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-
-                <p class="text-sm text-gray-400">
-                    Monitoring
-                </p>
-
-                <h3 class="text-xl font-bold text-purple-500 mt-2">
-                    Real-time
-                </h3>
-
-                <p class="text-gray-500 text-sm mt-2">
-                    Data diperbarui langsung dari sistem.
-                </p>
-
-            </div>
-
-        </div>
-
-        <!-- Grafik -->
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mt-8">
-
-    <div class="mb-6">
-
-        <h2 class="text-2xl font-bold text-gray-700">
-            📈 Statistik Transaksi
-        </h2>
-
-        <p class="text-gray-500 text-sm mt-1">
-            Distribusi data inventory saat ini
-        </p>
-
-    </div>
-
-    <div class="flex justify-center">
-
-        <div class="w-full max-w-md">
-            <canvas id="inventoryChart"></canvas>
-        </div>
-
-    </div>
-
-</div>
-
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
+    <script>
 
-const ctx = document.getElementById('inventoryChart');
+        const ctx = document.getElementById('inventoryChart');
 
-new Chart(ctx, {
-    type: 'doughnut',
+        new Chart(ctx, {
 
-    data: {
+            type: 'doughnut',
 
-        labels: [
-            'Barang',
-            'Kategori',
-            'Transaksi',
-            'Stock Rendah'
-        ],
+            data: {
 
-        datasets: [{
+                labels: [
+                    'Barang',
+                    'Kategori',
+                    'Transaksi',
+                    'Stock Rendah'
+                ],
 
-            data: [
-                {{ $totalItems }},
-                {{ $totalCategories }},
-                {{ $totalTransactions }},
-                {{ $lowStockItems }}
-            ],
+                datasets: [{
 
-            backgroundColor: [
-                '#3B82F6',
-                '#10B981',
-                '#8B5CF6',
-                '#EF4444'
-            ],
+                    data: [
+                        {{ $totalItems }},
+                        {{ $totalCategories }},
+                        {{ $totalTransactions }},
+                        {{ $lowStockItems }}
+                    ],
 
-            borderWidth: 0
+                    backgroundColor: [
+                        '#22C55E',
+                        '#16A34A',
+                        '#0F766E',
+                        '#DC2626'
+                    ],
 
-        }]
-    },
+                    borderWidth: 0
 
-    options: {
+                }]
 
-        responsive: true,
+            },
 
-        plugins: {
+            options: {
 
-            legend: {
-                position: 'bottom'
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+
+                        position: 'bottom'
+
+                    }
+
+                },
+
+                cutout: '70%'
+
             }
 
-        },
+        });
 
-        cutout: '65%'
-    }
+    </script>
 
-});
-
-</script>
 </x-layout>

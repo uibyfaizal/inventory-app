@@ -1,125 +1,174 @@
 <x-layout>
-    <x-navbar></x-navbar>
-    <div class="max-w-2xl mx-auto py-10 px-4">
+    <x-sidebar />
+
+    <main class="ml-64 min-h-screen bg-[#f5f7fb]">
 
         <!-- Header -->
-        <div class="mb-6">
-            <h1 class="text-2xl font-semibold text-gray-700">Ubah Data Barang</h1>
-            <p class="text-sm text-gray-400">Perbarui data barang</p>
+        <div class="bg-gradient-to-r from-emerald-500 to-green-600 px-10 py-8 shadow">
+
+            <h1 class="text-3xl font-bold text-white">
+                Ubah Barang
+            </h1>
+
+            <p class="text-green-100 mt-1">
+                Perbarui informasi barang yang tersimpan di gudang.
+            </p>
+
         </div>
 
-        <!-- Card Form -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div class="p-8">
 
-            <form action="/items/{{ $item->id }}" method="POST" class="space-y-5">
-                @csrf
-                @method('PUT')
+            <div class="max-w-4xl mx-auto">
 
-                <!-- Nama -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Nama Barang
-                    </label>
-                    <input type="text" name="name"
-                        value="{{ old('name', $item->name) }}"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
-                        placeholder="Masukkan nama barang" autocomplete="off">
+                <div class="bg-white rounded-2xl shadow-md p-8">
+
+                    <form action="/items/{{ $item->id }}" method="POST" class="space-y-6">
+
+                        @csrf
+                        @method('PUT')
+
+                        <!-- Nama -->
+                        <div>
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+                                Nama Barang
+                            </label>
+
+                            <input
+                                type="text"
+                                name="name"
+                                value="{{ old('name', $item->name) }}"
+                                placeholder="Masukkan nama barang"
+
+                                class="w-full rounded-xl border-gray-200 focus:ring-green-500 focus:border-green-500">
+
+                        </div>
+
+
+                        <!-- Kategori -->
+                        <div>
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+                                Kategori
+                            </label>
+
+                            <select
+                                id="categorySelect"
+                                name="category_id"
+
+                                class="w-full rounded-xl border-gray-200 focus:ring-green-500 focus:border-green-500">
+
+                                @foreach($categories as $category)
+
+                                    <option
+                                        value="{{ $category->id }}"
+                                        {{ old('category_id', $item->category_id) == $category->id ? 'selected' : '' }}>
+
+                                        {{ $category->name }}
+
+                                    </option>
+
+                                @endforeach
+
+                                <option value="other">
+                                    + Tambah Kategori Baru
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Kategori Baru -->
+                        <div id="newCategoryBox" class="hidden">
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+                                Nama Kategori Baru
+                            </label>
+
+                            <input
+                                type="text"
+                                name="new_category"
+                                placeholder="Contoh : Alat Tulis"
+
+                                class="w-full rounded-xl border-gray-200 focus:ring-green-500 focus:border-green-500">
+
+                        </div>
+
+
+                        <!-- Stock -->
+                        <div>
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+                                Jumlah Stock
+                            </label>
+
+                            <input
+                                type="number"
+                                name="stock"
+                                value="{{ old('stock', $item->stock) }}"
+                                placeholder="Masukkan jumlah stock"
+
+                                class="w-full rounded-xl border-gray-200 focus:ring-green-500 focus:border-green-500">
+
+                        </div>
+
+
+                        <!-- Button -->
+                        <div class="flex justify-end gap-3 pt-4">
+
+                            <a
+                                href="/items"
+                                class="px-6 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
+
+                                Batal
+
+                            </a>
+
+                            <button
+                                type="submit"
+
+                                class="px-7 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white shadow">
+
+                                Update Barang
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
                 </div>
 
-                {{-- Kategori --}}
-                <div>
-                    <label class="block text-sm font-medium text-grey-600 mb-1">Kategory</label>
+            </div>
 
-                    <select id="categorySelect" name="category_id" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                        <option value="Lainnya" disabled selected>-- Pilih Kategori</option>
-
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ $item->category_id == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    <div id="newCategoryBox" class="hidden mt-3">
-                        <label class="block text-sm font-medium text-gray-600 mb-1">
-                            Kategori Baru
-                        </label>    
-
-                        <input type="text" name="new_category"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
-                        placeholder="Contoh: Alat Tulis" autocomplete="off">
-                    </div>
-                    
-                </div>
-
-                <!-- Stock -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Stock
-                    </label>
-                    <input type="number" name="stock"
-                        value="{{ old('stock', $item->stock) }}"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
-                        placeholder="Masukkan jumlah stock" autocomplete="off">
-                </div>
-
-                <!-- Harga -->
-                {{-- <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Harga
-                    </label>
-                    <input type="number" name="price"
-                        value="{{ old('price', $item->price) }}"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"
-                        placeholder="Masukkan harga" autocomplete="off">
-                </div> --}}
-
-                <!-- Button -->
-                <div class="pt-4 flex justify-end gap-2">
-
-                    <!-- Back -->
-                    <a href="/items"
-                        class="px-4 py-2 rounded-lg text-sm text-gray-500 hover:text-gray-700 transition">
-                        Batal
-                    </a>
-
-                    <!-- Submit -->
-                    <button type="submit"
-                        class="bg-blue-400 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm shadow-sm transition">
-                        Update Data
-                    </button>
-
-                </div>
-
-            </form>
-
-            <script>
-
-                    const categorySelect =
-                    document.getElementById('categorySelect');
-
-                    const newCategoryBox =
-                    document.getElementById('newCategoryBox');
-
-                    categorySelect.addEventListener('change', function() {
-
-                        const selectedText =
-                        this.options[this.selectedIndex].text;
-
-                        if(selectedText === 'Lainnya') {
-
-                            newCategoryBox.classList.remove('hidden');
-
-                        } else {
-
-                            newCategoryBox.classList.add('hidden');
-
-                        }
-
-                    });
-
-            </script>
         </div>
 
-    </div>
+    </main>
+
+<script>
+
+const categorySelect = document.getElementById('categorySelect');
+const newCategoryBox = document.getElementById('newCategoryBox');
+
+function toggleCategory(){
+
+    if(categorySelect.value === 'other'){
+
+        newCategoryBox.classList.remove('hidden');
+
+    }else{
+
+        newCategoryBox.classList.add('hidden');
+
+    }
+
+}
+
+categorySelect.addEventListener('change', toggleCategory);
+
+toggleCategory();
+
+</script>
+
 </x-layout>

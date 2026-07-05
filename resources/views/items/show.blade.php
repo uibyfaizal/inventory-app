@@ -1,123 +1,265 @@
 <x-layout>
-    <x-navbar></x-navbar>
+    <x-sidebar />
 
-    <div class="max-w-5xl mx-auto py-6 md:py-10 px-3 md:px-4">
-
-        {{-- Alert --}}
-        @if (session('success'))
-            <div id="alertBox" class="flex justify-between items-center bg-green-100 text-green-700 p-3 rounded mb-4 text-sm md:text-base">
-                <span>{{ session('success') }}</span>
-                <button 
-                    onclick="document.getElementById('alertBox').style.display='none'"
-                    class="text-green-700 hover:text-green-900 font-bold">
-                    ✖
-                </button>
-            </div>
-        @endif
-
-        {{-- Error Alert --}}
-        @if(session('error'))
-            <div id="alertError" class="flex justify-between items-center bg-red-100 text-red-700 p-3 rounded mb-4 text-sm md:text-base">
-                <span>{{ session('error') }}</span>
-                <button 
-                    onclick="document.getElementById('alertError').style.display='none'"
-                    class="text-red-700 hover:text-red-900 font-bold">
-                    ✖
-                </button>
-            </div>
-        @endif
+    <main class="ml-64 min-h-screen bg-[#f5f7fb]">
 
         <!-- Header -->
-        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
-            
-            <div>
-                <h1 class="text-xl md:text-2xl font-bold pb-2 md:pb-4">📦 Detail Barang</h1>
-                <a href="/items">
-                    <x-button>Back to Items</x-button>
-                </a>
-            </div>
+        <div class="bg-gradient-to-r from-emerald-500 to-green-600 px-10 py-8 shadow">
 
-            <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
-                <a href="{{ route('transactions.create', $item->id) }}" class="w-full">
-                    <x-button class="w-full">Ambil / Masukkan Barang</x-button>
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <h1 class="text-3xl font-bold text-white">
+                        Detail Barang
+                    </h1>
+
+                    <p class="text-green-100 mt-1">
+                        Informasi lengkap barang dan riwayat transaksi.
+                    </p>
+
+                </div>
+
+                <a href="{{ route('transactions.create',$item->id) }}"
+                    class="bg-white text-green-600 px-6 py-3 rounded-xl font-semibold shadow hover:bg-green-50 transition">
+
+                    + Transaksi
+
                 </a>
+
             </div>
 
         </div>
 
-        <!-- Card Info -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-4 md:p-6">
 
-            <div class="space-y-2 text-gray-700 text-sm md:text-base">
-                <p><span class="font-medium">Nama Barang:</span> {{ $item->name }}</p>
-                <p><span class="font-medium whitespace-nowrap inline-block">Stock:</span> {{ $item->stock }}</p>
-                {{-- <p><span class="font-medium">Harga:</span> Rp {{ number_format($item->price, 0, ',', '.') }}</p> --}}
+        <div class="p-8">
+
+            {{-- Alert --}}
+            @if(session('success'))
+
+                <div class="bg-green-100 border border-green-200 text-green-700 rounded-xl px-5 py-4 mb-6">
+
+                    {{ session('success') }}
+
+                </div>
+
+            @endif
+
+            @if(session('error'))
+
+                <div class="bg-red-100 border border-red-200 text-red-700 rounded-xl px-5 py-4 mb-6">
+
+                    {{ session('error') }}
+
+                </div>
+
+            @endif
+
+
+            <!-- Informasi Barang -->
+            <div class="grid grid-cols-3 gap-6 mb-8">
+
+                <!-- Nama -->
+                <div class="bg-white rounded-2xl shadow p-6">
+
+                    <p class="text-gray-400 text-sm">
+                        Nama Barang
+                    </p>
+
+                    <h2 class="text-2xl font-bold mt-2">
+                        {{ $item->name }}
+                    </h2>
+
+                </div>
+
+                <!-- Stock -->
+                <div class="bg-white rounded-2xl shadow p-6">
+
+                    <p class="text-gray-400 text-sm">
+                        Stock Saat Ini
+                    </p>
+
+                    <h2 class="text-3xl font-bold mt-2">
+
+                        @if($item->stock==0)
+
+                            <span class="text-gray-500">
+                                0
+                            </span>
+
+                        @elseif($item->stock<=5)
+
+                            <span class="text-red-500">
+                                {{ $item->stock }}
+                            </span>
+
+                        @else
+
+                            <span class="text-green-600">
+                                {{ $item->stock }}
+                            </span>
+
+                        @endif
+
+                    </h2>
+
+                </div>
+
+                <!-- Status -->
+                <div class="bg-white rounded-2xl shadow p-6">
+
+                    <p class="text-gray-400 text-sm">
+                        Status
+                    </p>
+
+                    @if($item->stock==0)
+
+                        <span class="inline-block mt-3 bg-gray-200 text-gray-700 px-4 py-2 rounded-full">
+
+                            Barang Habis
+
+                        </span>
+
+                    @elseif($item->stock<=5)
+
+                        <span class="inline-block mt-3 bg-red-100 text-red-600 px-4 py-2 rounded-full">
+
+                            Hampir Habis
+
+                        </span>
+
+                    @else
+
+                        <span class="inline-block mt-3 bg-green-100 text-green-600 px-4 py-2 rounded-full">
+
+                            Stock Aman
+
+                        </span>
+
+                    @endif
+
+                </div>
+
             </div>
-            
-            {{-- Riwayat Transaksi --}}
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-5">
 
-                <h2 class="text-base md:text-lg font-semibold p-4 md:p-6">📊 Riwayat Transaksi</h2>
+
+            <!-- Riwayat -->
+            <div class="bg-white rounded-2xl shadow overflow-hidden">
+
+                <div class="flex justify-between items-center px-6 py-5 border-b">
+
+                    <h2 class="text-xl font-bold">
+
+                        Riwayat Transaksi
+
+                    </h2>
+
+                    <a href="/items"
+                        class="text-green-600 hover:underline">
+
+                        ← Kembali
+
+                    </a>
+
+                </div>
+
 
                 @if($transactions->isEmpty())
-                    <p class="text-gray-400 px-4 md:px-6 pb-4 md:pb-6 text-sm md:text-base">Belum ada transaksi</p>
+
+                    <div class="py-16 text-center">
+
+                        <p class="text-gray-400">
+
+                            Belum ada transaksi.
+
+                        </p>
+
+                    </div>
+
                 @else
 
-                    <div class="overflow-x-auto">
-                        <x-table class="min-w-[600px]">
+                    <table class="w-full">
 
-                            <!-- Head -->
-                            <thead class="bg-gray-50 text-gray-600 text-sm md:text-base">
-                                <tr>
-                                    <th class="px-3 md:px-6 py-3 font-medium">Tanggal</th>
-                                    <th class="px-3 md:px-6 py-3 font-medium">Tipe</th>
-                                    <th class="px-3 md:px-6 py-3 font-medium">Jumlah</th>
-                                    <th class="px-3 md:px-6 py-3 font-medium">Diambil Oleh</th>
-                                    <th class="px-3 md:px-6 py-3 font-medium">Catatan</th>
-                                </tr>
-                            </thead>
+                        <thead class="bg-gray-50">
 
-                            <!-- Body -->
-                            <tbody class="text-gray-700 divide-y text-sm md:text-base">
+                            <tr>
 
-                                @foreach ($transactions as $trx)
-                                    <tr class="hover:bg-gray-50 transition">
+                                <th class="px-6 py-4 text-left">Tanggal</th>
+                                <th class="px-6 py-4 text-left">Tipe</th>
+                                <th class="px-6 py-4 text-left">Jumlah</th>
+                                <th class="px-6 py-4 text-left">Diambil Oleh</th>
+                                <th class="px-6 py-4 text-left">Catatan</th>
 
-                                        <td class="px-3 md:px-6 py-3 md:py-4">
-                                            {{ $trx->created_at->format('d M Y, H:i') }}
-                                        </td>
+                            </tr>
 
-                                        <td class="px-3 md:px-6 py-3 md:py-4">
-                                            <span class="{{ $trx->type === 'OUT' ? 'text-red-500' : 'text-green-500' }} font-medium">
-                                                {{ $trx->type }}
+                        </thead>
+
+                        <tbody>
+
+                            @foreach($transactions as $trx)
+
+                                <tr class="border-t hover:bg-gray-50">
+
+                                    <td class="px-6 py-4">
+
+                                        {{ $trx->created_at->format('d M Y H:i') }}
+
+                                    </td>
+
+                                    <td class="px-6 py-4">
+
+                                        @if($trx->type=="IN")
+
+                                            <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm">
+
+                                                Masuk
+
                                             </span>
-                                        </td>
 
-                                        <td class="px-3 md:px-6 py-3 md:py-4">
-                                            {{ $trx->quantity }}
-                                        </td>
+                                        @else
 
-                                        <td class="px-3 md:px-6 py-3 md:py-4">
-                                            {{ $trx->taken_by ?? '-' }}
-                                        </td>
+                                            <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm">
 
-                                        <td class="px-3 md:px-6 py-3 md:py-4">
-                                            {{ $trx->note ?? '-' }}
-                                        </td>
+                                                Keluar
 
-                                    </tr>
-                                @endforeach
+                                            </span>
 
-                            </tbody>
+                                        @endif
 
-                        </x-table>
-                    </div>
+                                    </td>
+
+                                    <td class="px-6 py-4">
+
+                                        {{ $trx->quantity }}
+
+                                    </td>
+
+                                    <td class="px-6 py-4">
+
+                                        {{ $trx->taken_by }}
+
+                                    </td>
+
+                                    <td class="px-6 py-4">
+
+                                        {{ $trx->note ?: '-' }}
+
+                                    </td>
+
+                                </tr>
+
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
 
                 @endif
 
             </div>
-            
+
         </div>
 
-    </div>
+    </main>
+
 </x-layout>

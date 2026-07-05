@@ -1,117 +1,206 @@
 <x-layout>
-    <x-navbar></x-navbar>
+    <x-sidebar />
 
-    {{-- Alert --}}
-    @if(session('error'))
-        <div id="alertError" class="flex justify-between items-center bg-red-100 text-red-700 p-3 rounded mb-4">
-
-            <span>{{ session('error') }}</span>
-
-            <button 
-                onclick="document.getElementById('alertError').style.display='none'"
-                class="text-red-700 hover:text-red-900 font-bold">
-                ✖
-            </button>
-
-        </div>
-    @endif
-
-    <!-- 🟢 SUCCESS MESSAGE -->
-    @if(session('success'))
-        <div class="bg-green-100 text-green-600 p-3 mb-3 rounded">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    
-
-    <div class="max-w-2xl mx-auto py-10 px-4">
+    <main class="ml-64 min-h-screen bg-[#f5f7fb]">
 
         <!-- Header -->
-        <div class="mb-6">
-            <h1 class="text-2xl font-semibold text-gray-700">Transaksi Barang</h1>
-            <p class="text-sm text-gray-400">Isi data transaksi barang dengan lengkap</p>
+        <div class="bg-gradient-to-r from-emerald-500 to-green-600 px-10 py-8 shadow">
+
+            <h1 class="text-3xl font-bold text-white">
+                Transaksi Barang
+            </h1>
+
+            <p class="text-green-100 mt-1">
+                Tambah atau keluarkan stok barang dari gudang.
+            </p>
+
         </div>
 
-        <!-- Card Form -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div class="p-8">
 
-            <form action="{{ route('transactions.store', $item->id) }}" method="POST" class="space-y-5">
-                @csrf
+            {{-- Error --}}
+            @if(session('error'))
+                <div class="mb-6 rounded-xl bg-red-100 border border-red-200 text-red-700 px-5 py-4">
+                    {{ session('error') }}
+                </div>
+            @endif
 
-                <!-- Nama Barang -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Nama Barang
-                    </label>
-                    <input type="text" value="{{ $item->name }}"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent" disabled>
+            {{-- Success --}}
+            @if(session('success'))
+                <div class="mb-6 rounded-xl bg-green-100 border border-green-200 text-green-700 px-5 py-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+
+            <div class="max-w-4xl mx-auto">
+
+                <div class="bg-white rounded-2xl shadow-md p-8">
+
+                    <form action="{{ route('transactions.store',$item->id) }}"
+                        method="POST"
+                        class="space-y-6">
+
+                        @csrf
+
+                        <!-- Nama Barang -->
+                        <div>
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+
+                                Nama Barang
+
+                            </label>
+
+                            <input
+                                type="text"
+                                value="{{ $item->name }}"
+                                disabled
+
+                                class="w-full rounded-xl border-gray-200 bg-gray-100">
+
+                        </div>
+
+
+                        <!-- Stock -->
+                        <div>
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+
+                                Stock Saat Ini
+
+                            </label>
+
+                            <input
+                                type="text"
+                                value="{{ $item->stock }}"
+                                disabled
+
+                                class="w-full rounded-xl border-gray-200 bg-gray-100">
+
+                        </div>
+
+
+                        <!-- Tipe -->
+                        <div>
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+
+                                Jenis Transaksi
+
+                            </label>
+
+                            <select
+                                name="type"
+
+                                class="w-full rounded-xl border-gray-200 focus:ring-green-500 focus:border-green-500">
+
+                                <option value="IN">
+
+                                    📥 Barang Masuk
+
+                                </option>
+
+                                <option value="OUT">
+
+                                    📤 Barang Keluar
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Jumlah -->
+                        <div>
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+
+                                Jumlah Barang
+
+                            </label>
+
+                            <input
+                                type="number"
+                                name="quantity"
+
+                                placeholder="Masukkan jumlah"
+
+                                class="w-full rounded-xl border-gray-200 focus:ring-green-500 focus:border-green-500">
+
+                        </div>
+
+
+                        <!-- Diambil Oleh -->
+                        <div>
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+
+                                Diambil / Ditambahkan Oleh
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="taken_by"
+
+                                placeholder="Masukkan nama"
+
+                                class="w-full rounded-xl border-gray-200 focus:ring-green-500 focus:border-green-500">
+
+                        </div>
+
+
+                        <!-- Catatan -->
+                        <div>
+
+                            <label class="block mb-2 text-sm font-semibold text-gray-700">
+
+                                Catatan (Opsional)
+
+                            </label>
+
+                            <textarea
+                                rows="4"
+                                name="note"
+
+                                placeholder="Tambahkan catatan..."
+
+                                class="w-full rounded-xl border-gray-200 focus:ring-green-500 focus:border-green-500"></textarea>
+
+                        </div>
+
+
+                        <!-- Button -->
+                        <div class="flex justify-end gap-3 pt-4">
+
+                            <a href="/items/{{ $item->id }}"
+                                class="px-6 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
+
+                                Batal
+
+                            </a>
+
+                            <button
+                                type="submit"
+
+                                class="px-7 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white shadow">
+
+                                Simpan Transaksi
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
                 </div>
 
-                <!-- Stok Saat Ini -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Stock Saat Ini
-                    </label>
-                    <input type="text" value="{{ $item->stock }}"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent" disabled>
-                </div>
+            </div>
 
-                <!-- TYPE -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Tipe
-                    </label>
-                    <select type="number" name="type"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent">
-                        <option value="IN">IN (Tambah Stok)</option>
-                        <option value="OUT">OUT (Ambil Barang)</option>
-                    </select>
-                </div>
-
-                <!-- Quantity -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Jumlah
-                    </label>
-                    <input type="number" name="quantity"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent">
-                </div>
-
-                <!-- TAKEN BY -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Diambil oleh
-                    </label>
-                    <input type="text" name="taken_by"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent" autocomplete="off">
-                </div>
-
-                <!-- NOTE -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Catatan (Opsional)
-                    </label>
-                    <textarea name="note"
-                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent"> </textarea>
-                </div>
-
-                <!-- Button -->
-                <div class="pt-4 flex justify-end gap-2">
-
-                    <!-- Back -->
-                    <a href="/items"
-                        class="px-4 py-2 rounded-lg text-sm text-gray-500 hover:text-gray-700 transition">
-                        Batal
-                    </a>
-
-                    <!-- Submit -->
-                    <x-button type="submit">Simpan data transaksi</x-button>
-
-                </div>
-
-            </form>
         </div>
 
-    </div>
+    </main>
+
 </x-layout>
