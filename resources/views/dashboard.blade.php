@@ -2,9 +2,9 @@
 
     <x-sidebar />
 
-    <main class="ml-64 min-h-screen bg-[#f5f7fb]">
+    <main class="ml-64 min-h-screen bg-[#f5f7fb] lg:ml-56">
 
-        <div class="max-w-7xl mx-auto py-8 px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
 
             {{-- Hero --}}
             <div class="bg-gradient-to-r from-green-600 to-emerald-500 rounded-3xl p-8 text-white shadow-lg mb-8">

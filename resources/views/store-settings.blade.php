@@ -2,7 +2,7 @@
 
     <x-sidebar />
 
-    <main class="ml-64 min-h-screen bg-[#f5f7fb]">
+    <main class="ml-64 min-h-screen bg-[#f5f7fb] lg:ml-56">
 
         <div class="max-w-4xl mx-auto py-10 px-8">
 

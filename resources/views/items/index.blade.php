@@ -1,8 +1,8 @@
 <x-layout>
     <x-sidebar />
 
-    <main class="ml-64 min-h-screen bg-gray-100">
-        <div class="max-w-6xl mx-auto py-8 px-8">
+    <main class="min-h-screen bg-gray-100 lg:ml-60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
 
             @if (session('success'))
                 <div id="alertBox" class="flex justify-between items-center bg-green-100 text-green-700 p-3 rounded mb-4 text-sm md:text-base">
@@ -23,7 +23,7 @@
             @endif
         
             <!-- Header -->
-            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-4">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                 <div>
                     <p class="text-sm text-gray-500">
                         Inventory Management
@@ -34,7 +34,7 @@
                     </h1>
                 </div>
 
-                <a href="/items/create" class="w-full md:w-auto">
+                <a href="/items/create" class="w-full lg-w-auto">
                     <x-button class="bg-emerald-500 hover:bg-emerald-600 w-full md:w-auto">+ Tambah Barang Masuk</x-button>
                 </a>
             </div>
@@ -84,9 +84,9 @@
                     @endforeach
                 </div>
 
-                <div class="filter-data mb-4" style="display: flex; gap: 20px;">
-                    <form action="/items" method="GET">
-                        <select name="sort" onchange="this.form.submit()" class="rounded-lg border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300" placeholder="Urut Berdasarkan">
+                <div class="filter-data flex flex-col sm:flex-row gap-3 mb-5">
+                    <form action="/items" method="GET" class="w-full sm-w-auto">
+                        <select name="sort" onchange="this.form.submit()" class="w-full sm:w-56 rounded-lg border-gray-200 text-sm focus:ring-2 focus:ring-emerald-300" placeholder="Urut Berdasarkan">
                             <option value="" disabled>Urut Berdasarkan</option>
                             <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>
                                 Tanggal Terbaru
@@ -97,8 +97,8 @@
                         </select>
                     </form>
 
-                    <a href="/items/export/pdf">
-                    <x-button class="bg-slate-700 hover:bg-slate-800">
+                    <a href="/items/export/pdf" class="w-full sm-w-auto">
+                    <x-button class="w-full sm:w-auto bg-slate-700 hover:bg-slate-800">
                         Export PDF
                     </x-button>
                 </a>
@@ -109,7 +109,7 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
 
                 <div class="overflow-x-auto">
-                    <x-table class="min-w-[600px]">
+                    <x-table class="min-w-[900px]">
                         
                         <!-- Head -->
                         <thead class="bg-emerald-50 text-gray-600 text-sm md:text-base">
@@ -127,7 +127,13 @@
                             @foreach ($items as $item)
                                 <tr class="hover:bg-gray-50 transition">
                                     <td class="px-3 md:px-6 py-3 md:py-4">
-                                        <span style="font-size: 10px" class="text-red-500">{{ $item->created_at }}<br></span>
+                                        <span class="text-[11px] text-red-500 block">
+                                            {{ $item->created_at->format('d M Y') }}
+                                        </span>
+
+                                        <span class="text-[11px] text-gray-400 block">
+                                            {{ $item->created_at->format('H:i') }}
+                                        </span>
                                         {{ $item->name }}
                                     </td>
                                     <td class="px-6 py-4">
@@ -157,7 +163,7 @@
                                     {{-- <td class="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap inline-block">Rp {{ number_format($item->price, 0, ',', '.') }}</td> --}}
                                     <td class="px-3 md:px-6 py-3 md:py-4">
                                         
-                                        <div class="flex flex-col sm:flex-row gap-2">
+                                        <div class="flex flex-wrap gap-2">
                                             
                                             <!-- Edit -->
                                             <a href="/items/{{ $item->id }}/update"

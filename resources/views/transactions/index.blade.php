@@ -2,7 +2,7 @@
 
     <x-sidebar />
 
-    <main class="ml-64 min-h-screen bg-[#f5f7fb]">
+    <main class="ml-64 min-h-screen bg-[#f5f7fb] lg:ml-56">
 
         <!-- Header -->
         <div class="bg-gradient-to-r from-emerald-500 to-green-600 px-10 py-8 shadow">
